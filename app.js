@@ -19,7 +19,14 @@ var shortener = require('./lib/shortener')(config);
 
 
 // Shorten URL
-app.post('/:longUrl', function(req, res, next) {
+var shortenUrl = function(req, res, next) {
+  if (!req.params.longUrl) {
+    return next({
+      code: 400,
+      message: 'longUrl parameter is required'
+    });
+  }
+
   shortener.shorten(req.params.longUrl, function(err, shortUrl) {
     if (err) {
       return next(err);
@@ -32,10 +39,24 @@ app.post('/:longUrl', function(req, res, next) {
 
     res.send(200, customShortUrl);
   });
+};
+
+
+// Shorten URL
+app.all('/', function(req, res, next) {
+  req.params.longUrl = req.param('longUrl');
+  shortenUrl(req, res, next);
 });
 
-// Expand URL
-app.get('/:code', function(req, res, next) {
+// Expand URL (of shorten, whatever)
+app.all('/:code', function(req, res, next) {
+  // If the code begins with 'http', it’s a URL, so shorten it.
+  if (req.params.code.indexOf('http') === 0) {
+    req.params.longUrl = req.params.code;
+    return shortenUrl(req, res, next);
+  }
+
+  // Expand short code and redirect
   var shortUrl = shortener.prefix + req.params.code;
 
   shortener.expand(shortUrl, function(err, longUrl) {
