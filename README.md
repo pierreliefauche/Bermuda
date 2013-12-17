@@ -28,34 +28,58 @@ HTTP or HTTPS, both are fine. This is actually the only thing you’ll have to p
 ## How do I use it?
 So let’s say you installed it and used your domain `short.io`.
 
-You want to shorten `http://www.myreallytoolongdomainname.com/seriously/stop/adding/characters.html`.
+You want to shorten `{longUrl}`.
 
 ### Shorten
 #### Request
 ```
-POST
-http://short.io/http%3A%2F%2Fmyreallytoolongdomainname.com%2Fseriously%2Fstop%2Fadding%2Fcharacters.html
+GET, POST or PUT
+http://short.io/{longUrl}
 ```
-__YES__, the long URL is URL encoded. Obviously.
+
+or
+
+```
+GET, POST or PUT
+http://short.io/?longUrl={longUrl}
+```
+
+or
+
+```
+POST or PUT
+http://short.io/
+{
+  "longUrl": "{longUrl}"
+}
+```
+__YES__, the long URL is URL encoded in the URL or the query. Obviously.
 
 #### Response
 ```
 status: 200
-body: "http://short.io/Ytg54P"
+body: "http://short.io/FWWiET"
+```
+
+or, if your Accept header begs for JSON:
+
+```
+status: 200
+Content-Type: application/json
+body: { "shortUrl": "http://short.io/FWWiET" }
 ```
 
 ### Expand
 #### Request
 ```
-GET
-http://short.io/Ytg54P
+GET, PUT, POST
+http://short.io/FWWiET
 ```
 
 #### Response
 ```
-status:302
-headers
-Location: "http://www.myreallytoolongdomainname.com/seriously/stop/adding/characters.html"
+status: 302
+Location: "{longUrl}"
 ```
 
 So people requesting the shortened URL will be redirected to the final URL. If you want to get the final URL, just don’t follow the redirection.
