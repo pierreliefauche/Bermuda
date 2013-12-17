@@ -37,7 +37,14 @@ var shortenUrl = function(req, res, next) {
     // Build final short URL
     var customShortUrl = req.protocol + '://' + req.get('host') + '/' + code;
 
-    res.send(200, customShortUrl);
+    res.format({
+      default: function(){
+        res.send(customShortUrl);
+      },
+      json: function(){
+        res.send({ shortUrl: customShortUrl });
+      }
+    });
   });
 };
 
