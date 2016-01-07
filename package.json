@@ -1,19 +1,29 @@
 {
   "name": "bermuda",
-  "version": "0.0.1",
+  "version": "1.0.0",
+  "author": {
+    "name": "Pierre-Élie Fauché",
+    "email": "github@pierre-elie.me"
+  },
   "dependencies": {
-    "express": "3.x",
-    "underscore": "1.5.x",
-    "request": "2.x"
+    "body-parser": "1.14.2",
+    "compression": "1.6.0",
+    "cors": "2.7.1",
+    "express": "4.13.3",
+    "helmet": "1.0.1",
+    "hpp": "0.2.0",
+    "underscore": "1.8.3",
+    "request": "2.67.0"
   },
   "devDependencies": {
     "nodemon": "latest",
     "jshint": "latest"
   },
   "engines": {
-    "node": "0.10.x"
+    "node": "5.x"
   },
   "scripts": {
-    "test": "make test"
+    "test": "make test",
+    "start": "node web.js"
   }
 }

@@ -1,21 +1,34 @@
-/* jshint unused: false */
-
-var https = require('https');
-https.globalAgent.maxSockets = 250;
+'use strict'; /* jshint unused: false */
 
 var express = require('express');
-var app = module.exports = express();
+var bodyParser = require('body-parser');
+var hpp = require('hpp');
+var helmet = require('helmet');
+var compression = require('compression');
+var cors = require('cors');
 
-// Express Middleware
-app.use(express.bodyParser());
-app.use(express.compress());
-
-
-// Retrieve configuration
+// Configuration
 var config = require('./config');
 
 // Library
 var shortener = require('./lib/shortener')(config);
+
+// Initialize web server
+var app = express();
+
+app.set('case sensitive routing', false);
+app.set('etag', false);
+app.set('query parser', 'simple');
+app.set('strict routing', false);
+app.set('trust proxy', true);
+app.set('x-powered-by', false);
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(hpp());
+app.use(helmet());
+app.use(compression());
+app.use(cors());
 
 
 // Shorten URL
@@ -55,7 +68,7 @@ app.all('/', function(req, res, next) {
   shortenUrl(req, res, next);
 });
 
-// Expand URL (of shorten, whatever)
+// Expand URL (or shorten, whatever)
 app.all('/:code', function(req, res, next) {
   // If the code begins with 'http', it’s a URL, so shorten it.
   if (req.params.code.indexOf('http') === 0) {
@@ -79,5 +92,7 @@ app.all('/:code', function(req, res, next) {
 // Error handling
 app.use(function(err, req, res, next){
   console.error(err);
-  res.send(err.code || 500, err.message);
+  res.status(err.code || 500).send(err.message);
 });
+
+module.exports = app;
