@@ -1,5 +1,7 @@
 # Bermuda
 
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+
 ## What is that?
 This is a push-and-play shortener server to use your own domain to shorten URLs.
 

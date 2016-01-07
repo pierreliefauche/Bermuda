@@ -1,0 +1,20 @@
+{
+  "name": "Bermuda",
+  "description": "Shortened URLs and bad jokes",
+  "repository": "https://github.com/pierreliefauche/Bermuda",
+  "website": "https://github.com/pierreliefauche/Bermuda",
+  "env": {
+    "HOST": {
+      "description": "The server host, used in shortened urls (ex: fabulous-roses.herokuapp.com).",
+      "required": false
+    },
+    "API_KEY": {
+      "description": "Google URL Shortener API key.",
+      "required": true
+    },
+    "RESTRICT": {
+      "description": "Restrict the urls that can be shortened to this prefix (space-separated list).",
+      "required": false
+    }
+  }
+}
