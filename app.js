@@ -32,7 +32,7 @@ var shortenUrl = function(req, res, next) {
       return next(err);
     }
 
-    var code = shortUrl.substr(shortener.prefix.length);
+    var code = shortener.getShortCode(shortUrl);
 
     // Build final short URL
     var customShortUrl = req.protocol + '://' + req.get('host') + '/' + code;
