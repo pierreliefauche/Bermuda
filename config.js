@@ -1,4 +1,7 @@
 module.exports = {
+  // Your server host, to make it fix instead of getting it from headers
+  host: process.env.HOST,
+
   // Your Google API key, if you want to use one.
   apiKey: process.env.API_KEY,
 
